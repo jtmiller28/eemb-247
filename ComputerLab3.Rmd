@@ -455,6 +455,44 @@ Pstar
 **Do any 1 of the following:**
 
 1. Try making *any* modification to the simple continuous-time predator-prey model that you're interested in, and try calculating the equilibrium through simulation, analytically, and numerically.  Try varying 1 or more of the parameters and see what happens to the equilibrium.
+```{r}
+
+
+
+LV_pred_prey_type2 = function (x, parms) {
+  N = x[1]
+  P = x[2]
+  a = parms[1]
+  h = parms[2]
+  c = parms[3]
+  m = parms[4]
+  r = parms[5]
+  K = parms[6]
+
+  F1 = r*N*(1 - (N/K)) - (a*N*P)/(1 + a*h*N)
+  F2 = ((c*a*N*P)/(1 + a*h*N)) - m*P
+
+ return(c(F1,F2))
+}
+
+x <- c(10, 10)
+parameters = c(a = 0.01, h = 0.5, c = 0.5, m = 0.1, r = 0.05, K = 100)
+
+eqm = multiroot(LV_pred_prey_type2, x, parms = parameters)
+
+eqm
+
+
+
+results = lsoda(N0, times, Prey.model, Parameters)
+results
+# Naming columns for easy identification
+colnames(results) = c("time", "N")
+
+plot(results[, "time"], results[, "N"], type="l", col="blue")
+
+
+```
 
     *or* 
 
